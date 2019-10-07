@@ -32,3 +32,8 @@ func GetExtension(filename string) string {
 
 	return ext
 }
+
+// NewName generates a new name for a colliding name.
+func NewName(filename string) string {
+	return "blah"
+}
