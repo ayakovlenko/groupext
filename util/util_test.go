@@ -47,6 +47,13 @@ func TestNewName(t *testing.T) {
 			"filename (3).ext",
 		)
 	})
+
+	t.Run("name collision: name with parenthesis", func(t *testing.T) {
+		assertString(t,
+			NewName("filename (1) (2).ext"),
+			"filename (1) (3).ext",
+		)
+	})
 }
 
 func assertString(t *testing.T, have, want string) {
