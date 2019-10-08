@@ -1,6 +1,9 @@
 package util
 
-import "testing"
+import (
+	"io/ioutil"
+	"testing"
+)
 
 func TestGetExtension(t *testing.T) {
 
@@ -53,6 +56,29 @@ func TestNewName(t *testing.T) {
 			NewName("filename (1) (2).ext"),
 			"filename (1) (3).ext",
 		)
+	})
+}
+
+func TestFileExists(t *testing.T) {
+
+	t.Run("file does not exist", func(t *testing.T) {
+		have := fileExists("3fd7kht7xz8gvshr.txt")
+		want := false
+
+		if have != want {
+			t.Fatalf("expected file to not exist")
+		}
+	})
+
+	t.Run("file exists", func(t *testing.T) {
+		tmpfile, _ := ioutil.TempFile("", "example.*.txt")
+
+		have := fileExists(tmpfile.Name())
+		want := true
+
+		if have != want {
+			t.Fatalf("expected file to not exist")
+		}
 	})
 }
 
