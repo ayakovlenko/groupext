@@ -11,6 +11,8 @@ import (
 	"strings"
 )
 
+const verbose = true // TODO: command-line flag
+
 // DoStuff does stuff.
 func DoStuff(dirpath string) {
 	files, err := ioutil.ReadDir(dirpath)
@@ -23,7 +25,10 @@ func DoStuff(dirpath string) {
 
 		filename := filepath.Join(dirpath, f.Name())
 		extDir := GetExtension(filename)
-		_ = os.Mkdir(filepath.Join(dirpath, extDir), os.ModePerm)
+		err = os.Mkdir(filepath.Join(dirpath, extDir), os.ModePerm)
+		if err == nil && verbose {
+			fmt.Printf("mkdir %q\n", extDir)
+		}
 
 		Move(
 			filename,
@@ -41,7 +46,9 @@ func Move(oldName, newName string) {
 
 	err := os.Rename(oldName, newName)
 	check(err)
-	fmt.Printf("%s -> %s\n", oldName, newName) // TODO: if verbose
+	if verbose {
+		fmt.Printf("mv %q %q\n", oldName, newName)
+	}
 }
 
 // GetExtension returns extension of a file.
