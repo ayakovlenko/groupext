@@ -37,6 +37,7 @@ func TestGetExtension(t *testing.T) {
 }
 
 func TestNewName(t *testing.T) {
+
 	t.Run("first name collision", func(t *testing.T) {
 		assertString(t,
 			NewName("filename.ext"),
