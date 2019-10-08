@@ -24,28 +24,34 @@ func DoStuff(dirpath string) {
 		}
 
 		filename := filepath.Join(dirpath, f.Name())
-		extDir := GetExtension(filename)
-		err = os.Mkdir(filepath.Join(dirpath, extDir), os.ModePerm)
-		if err == nil && verbose {
-			fmt.Printf("mkdir %q\n", extDir)
+		extDir := filepath.Join(dirpath, GetExtension(filename))
+
+		if !fileExists(extDir) {
+			err = os.Mkdir(extDir, os.ModePerm)
+			check(err)
+
+			if verbose {
+				fmt.Printf("mkdir %q\n", extDir)
+			}
 		}
 
 		Move(
 			filename,
-			filepath.Join(filepath.Dir(filename), extDir, filepath.Base(filename)),
+			filepath.Join(extDir, filepath.Base(filename)),
 		)
 	}
 }
 
 // Move moves a file from old location to new location.
 func Move(oldName, newName string) {
-	if _, err := os.Stat(newName); !os.IsNotExist(err) {
+	if fileExists(newName) {
 		Move(oldName, NewName(newName))
 		return
 	}
 
 	err := os.Rename(oldName, newName)
 	check(err)
+
 	if verbose {
 		fmt.Printf("mv %q %q\n", oldName, newName)
 	}
@@ -86,6 +92,11 @@ func NewName(filename string) string {
 	check(err)
 	ext := res[0][3]
 	return fmt.Sprintf("%s (%d).%s", base, attempt+1, ext)
+}
+
+func fileExists(filename string) bool {
+	_, err := os.Stat(filename)
+	return !os.IsNotExist(err)
 }
 
 func check(err error) {
