@@ -76,11 +76,11 @@ func GetExtension(filename string) string {
 	return ext
 }
 
+var filenamePat = regexp.MustCompile(`(.+) copy( (\d+))?\.(.+)`)
+
 // NewName generates a new name for a colliding name.
 func NewName(filename string) string {
-	pat, err := regexp.Compile(`(.+) copy( (\d+))?\.(.+)`)
-	check(err)
-	res := pat.FindAllStringSubmatch(filename, -1)
+	res := filenamePat.FindAllStringSubmatch(filename, -1)
 
 	if len(res) == 0 {
 		li := strings.LastIndex(filename, ".")
