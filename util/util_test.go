@@ -78,7 +78,7 @@ func TestFileExists(t *testing.T) {
 		want := true
 
 		if have != want {
-			t.Fatalf("expected file to not exist")
+			t.Fatalf("expected file to exist")
 		}
 	})
 }
