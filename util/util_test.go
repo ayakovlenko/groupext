@@ -41,21 +41,21 @@ func TestNewName(t *testing.T) {
 	t.Run("first name collision", func(t *testing.T) {
 		assertString(t,
 			NewName("filename.ext"),
-			"filename (2).ext",
+			"filename copy.ext",
 		)
 	})
 
 	t.Run("second name collision", func(t *testing.T) {
 		assertString(t,
-			NewName("filename (2).ext"),
-			"filename (3).ext",
+			NewName("filename copy.ext"),
+			"filename copy 2.ext",
 		)
 	})
 
-	t.Run("name collision: name with parenthesis", func(t *testing.T) {
+	t.Run("third name collision", func(t *testing.T) {
 		assertString(t,
-			NewName("filename (1) (2).ext"),
-			"filename (1) (3).ext",
+			NewName("filename copy 2.ext"),
+			"filename copy 3.ext",
 		)
 	})
 }

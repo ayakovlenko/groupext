@@ -78,20 +78,24 @@ func GetExtension(filename string) string {
 
 // NewName generates a new name for a colliding name.
 func NewName(filename string) string {
-	pat, err := regexp.Compile(`(.+) \((\d+)\)\.(.+)`)
+	pat, err := regexp.Compile(`(.+) copy( (\d+))?\.(.+)`)
 	check(err)
 	res := pat.FindAllStringSubmatch(filename, -1)
 
 	if len(res) == 0 {
 		li := strings.LastIndex(filename, ".")
-		return fmt.Sprintf("%s (2)%s", filename[:li], filename[li:])
+		return fmt.Sprintf("%s copy%s", filename[:li], filename[li:])
 	}
 
 	base := res[0][1]
-	attempt, err := strconv.Atoi(res[0][2])
+	ext := res[0][4]
+	attempt := res[0][3]
+	if attempt == "" {
+		return fmt.Sprintf("%s copy 2.%s", base, ext)
+	}
+	nextAttempt, err := strconv.Atoi(attempt)
 	check(err)
-	ext := res[0][3]
-	return fmt.Sprintf("%s (%d).%s", base, attempt+1, ext)
+	return fmt.Sprintf("%s copy %d.%s", base, nextAttempt+1, ext)
 }
 
 func fileExists(filename string) bool {
