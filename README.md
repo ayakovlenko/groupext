@@ -1,16 +1,14 @@
 # groupext
 
-## What it does?
+## What it does
 
 It sorts files in the working directory into directories named after file
-extension.
+extensions.
 
-## How it works?
+## How it works
 
 ```
 $ cd /tmp
-$ mkdir example; cd example
-$ touch example.js example.go example.jpg
 $ tree .
 .
 ├── example.go
@@ -18,13 +16,15 @@ $ tree .
 └── example.js
 
 0 directories, 3 files
+
 $ groupext .
-mkdir "go"
-mv "example.go" "go/example.go"
-mkdir "jpg"
-mv "example.jpg" "jpg/example.jpg"
-mkdir "js"
-mv "example.js" "js/example.js"
+# mkdir "go"
+# mv "example.go" "go/example.go"
+# mkdir "jpg"
+# mv "example.jpg" "jpg/example.jpg"
+# mkdir "js"
+# mv "example.js" "js/example.js"
+
 $ tree .
 .
 ├── go
